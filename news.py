@@ -5,6 +5,8 @@ FEEDS = [
     "https://hnrss.org/frontpage",
     "https://www.reddit.com/r/technology/.rss",
     "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
+    "https://www.purepc.pl/rss_all.xml",
 ]
 
 HOURS = 24                 # how far back to look
