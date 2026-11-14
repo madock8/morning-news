@@ -7,6 +7,10 @@ FEEDS = [
     "https://feeds.bbci.co.uk/news/world/rss.xml",
     "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
     "https://www.purepc.pl/rss_all.xml",
+    "https://www.telepolis.pl/rss",
+    "https://www.polsatnews.pl/rss/technologie.xml",
+    "https://www.polsatnews.pl/rss/swiat.xml",
+    
 ]
 
 HOURS = 24                 # how far back to look
