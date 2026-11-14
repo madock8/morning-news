@@ -1,13 +1,25 @@
-import feedparser, datetime, html, os
+import feedparser, datetime, html, os, calendar
+from zoneinfo import ZoneInfo
 
 FEEDS = [
     "https://hnrss.org/frontpage",
     "https://www.reddit.com/r/technology/.rss",
     "https://feeds.bbci.co.uk/news/world/rss.xml",
-    "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
-    "http://www.benchmark.pl/rss/testy-recenzje-minirecenzje.xml",
-    "https://www.purepc.pl/rss_all.xml",
 ]
+
+HOURS = 24                 # how far back to look
+MAX_PER_FEED = 30          # safety cap per source
+LOCAL_TZ = ZoneInfo("Europe/Warsaw")
+
+now_utc = datetime.datetime.now(datetime.timezone.utc)
+cutoff = now_utc - datetime.timedelta(hours=HOURS)
+
+def entry_time(e):
+    """Return the entry's publish time as an aware UTC datetime, or None."""
+    t = e.get("published_parsed") or e.get("updated_parsed")
+    if not t:
+        return None
+    return datetime.datetime.fromtimestamp(calendar.timegm(t), tz=datetime.timezone.utc)
 
 sections = []
 seen = set()
@@ -15,15 +27,33 @@ seen = set()
 for url in FEEDS:
     feed = feedparser.parse(url)
     source = feed.feed.get("title", url)
-    rows = []
-    for e in feed.entries[:10]:
-        if e.link in seen:
-            continue
-        seen.add(e.link)
-        rows.append(f'<li><a href="{html.escape(e.link)}">{html.escape(e.title)}</a></li>')
-    sections.append(f"<h2>{html.escape(source)}</h2><ul>{''.join(rows)}</ul>")
 
-now = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    fresh = []
+    for e in feed.entries:
+        link = e.get("link")
+        if not link or link in seen:
+            continue
+        published = entry_time(e)
+        if published is None or published < cutoff:
+            continue  # skip undated or older than 24h
+        seen.add(link)
+        fresh.append((published, e.get("title", "(no title)"), link))
+
+    fresh.sort(reverse=True)  # newest first
+    fresh = fresh[:MAX_PER_FEED]
+
+    if fresh:
+        rows = "".join(
+            f'<li><span class="time">{p.astimezone(LOCAL_TZ).strftime("%H:%M")}</span> '
+            f'<a href="{html.escape(link)}">{html.escape(title)}</a></li>'
+            for p, title, link in fresh
+        )
+    else:
+        rows = '<li class="empty">No new items in the last 24 hours.</li>'
+
+    sections.append(f"<h2>{html.escape(source)} ({len(fresh)})</h2><ul>{rows}</ul>")
+
+updated = now_utc.astimezone(LOCAL_TZ).strftime("%Y-%m-%d %H:%M")
 
 page = f"""<!doctype html>
 <html lang="en">
@@ -34,12 +64,15 @@ page = f"""<!doctype html>
 <style>
   body {{ font-family: system-ui, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }}
   h2 {{ margin-top: 2rem; border-bottom: 1px solid #ccc; }}
+  ul {{ list-style: none; padding: 0; }}
   li {{ margin: .4rem 0; }}
+  .time {{ color: #888; font-variant-numeric: tabular-nums; margin-right: .4rem; }}
+  .empty {{ color: #888; }}
 </style>
 </head>
 <body>
 <h1>Morning news</h1>
-<p>Updated: {now}</p>
+<p>News from the last {HOURS} hours. Updated: {updated} (Poland time)</p>
 {''.join(sections)}
 </body>
 </html>"""
