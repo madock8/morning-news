@@ -6,6 +6,7 @@ FEEDS = [
     "https://feeds.bbci.co.uk/news/world/rss.xml",
     "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
     "http://www.benchmark.pl/rss/testy-recenzje-minirecenzje.xml",
+    "https://www.purepc.pl/rss_all.xml",
 ]
 
 sections = []
