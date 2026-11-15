@@ -7,11 +7,18 @@ CATEGORIES = {
         "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
         "https://www.purepc.pl/rss_all.xml",
         "https://www.telepolis.pl/rss",
+        "https://www.gry-online.pl/rss/tech.xml",
         "https://www.polsatnews.pl/rss/technologie.xml",
         #"https://www.theverge.com/rss/index.xml",
         #"https://feeds.arstechnica.com/arstechnica/index",
         #"https://techcrunch.com/feed/",
         #"https://hnrss.org/frontpage",
+    ],
+    "Gry": [
+        "https://www.gram.pl/rss/content.xml",
+        "https://www.gry-online.pl/rss/gry.xml",
+        "https://www.eurogamer.pl/feed",
+        "https://www.ppe.pl/rss.html",
     ],
     "IT": [
         "https://www.bleepingcomputer.com/feed/",
