@@ -24,6 +24,10 @@ CATEGORIES = {
         "https://feeds.bbci.co.uk/news/world/rss.xml",
         "https://feeds.bbci.co.uk/news/rss.xml",          
     ],
+    "Finanse": [
+        "http://www.money.pl/rss/main.xml",
+        "https://www.bankier.pl/rss",        
+    ],
 }
 
 HOURS = 24                 # how far back to look
