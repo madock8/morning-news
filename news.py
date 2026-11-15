@@ -117,37 +117,63 @@ page = f"""<!doctype html>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0f172a">
+<script>
+  (function () {{
+    var t = null;
+    try {{ t = localStorage.getItem("theme"); }} catch (e) {{}}
+    if (t !== "dark" && t !== "light") {{
+      t = "dark";
+      // t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }}
+    document.documentElement.setAttribute("data-theme", t);
+  }})();
+</script>
 <style>
-  body {{ font-family: system-ui, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }}
-  h2 {{ margin-top: 2rem; border-bottom: 1px solid #ccc; font-size: 1.1rem; }}
+  :root {{
+    --bg: #ffffff; --text: #222222; --link: #1a56c4; --muted: #888888;
+    --line: #cccccc; --chip-bg: #f5f5f5; --chip-border: #cccccc;
+    --active-bg: #222222; --active-text: #ffffff;
+    color-scheme: light;
+  }}
+  :root[data-theme="dark"] {{
+    --bg: #111418; --text: #e6e6e6; --link: #8ab4f8; --muted: #8b929a;
+    --line: #333a42; --chip-bg: #1d2229; --chip-border: #333a42;
+    --active-bg: #e6e6e6; --active-text: #111418;
+    color-scheme: dark;
+  }}
+  body {{ font-family: system-ui, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem;
+          line-height: 1.5; background: var(--bg); color: var(--text); }}
+  a {{ color: var(--link); }}
+  h2 {{ margin-top: 2rem; border-bottom: 1px solid var(--line); font-size: 1.1rem; }}
   ul {{ list-style: none; padding: 0; }}
   li {{ margin: .4rem 0; }}
-  .time {{ color: #888; font-variant-numeric: tabular-nums; margin-right: .4rem; }}
-  .empty {{ color: #888; }}
+  .time {{ color: var(--muted); font-variant-numeric: tabular-nums; margin-right: .4rem; }}
+  .empty {{ color: var(--muted); }}
+  .header {{ display: flex; justify-content: space-between; align-items: center; }}
+  .header h1 {{ margin: 0; }}
+  .theme-btn {{ border: 1px solid var(--chip-border); background: var(--chip-bg); color: var(--text);
+                width: 2.4rem; height: 2.4rem; border-radius: 50%; cursor: pointer; font-size: 1.1rem; }}
   .tabs {{ display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }}
-  .tab {{ border: 1px solid #ccc; background: #f5f5f5; color: #222; padding: .5rem .9rem;
-          border-radius: 999px; cursor: pointer; font-size: 1rem; }}
-  .tab.active {{ background: #222; color: #fff; border-color: #222; }}
+  .tab {{ border: 1px solid var(--chip-border); background: var(--chip-bg); color: var(--text);
+          padding: .5rem .9rem; border-radius: 999px; cursor: pointer; font-size: 1rem; }}
+  .tab.active {{ background: var(--active-bg); color: var(--active-text); border-color: var(--active-bg); }}
   .count {{ opacity: .7; font-size: .85em; }}
   .print-title {{ display: none; }}
   .js .panel {{ display: none; }}
   .js .panel.active {{ display: block; }}
-  @media (prefers-color-scheme: dark) {{
-    body {{ background: #111; color: #eee; }}
-    a {{ color: #8ab4f8; }}
-    h2 {{ border-color: #444; }}
-    .tab {{ background: #222; color: #eee; border-color: #444; }}
-    .tab.active {{ background: #eee; color: #111; border-color: #eee; }}
-  }}
 </style>
 </head>
 <body>
-<h1>Morning news</h1>
+<div class="header">
+  <h1>mNews</h1>
+  <button id="theme-toggle" class="theme-btn" type="button" aria-label="Switch light or dark theme"></button>
+</div>
 <p>News from the last {HOURS} hours. Updated: {updated} (Poland time)</p>
 <nav class="tabs">{''.join(buttons)}</nav>
 {''.join(panels)}
 <script>
   document.documentElement.classList.add("js");
+
   var tabs = document.querySelectorAll(".tab");
   var panels = document.querySelectorAll(".panel");
   function show(id) {{
@@ -158,6 +184,17 @@ page = f"""<!doctype html>
   tabs.forEach(function (t) {{ t.addEventListener("click", function () {{ show(t.dataset.tab); }}); }});
   var start = location.hash.slice(1);
   show(document.getElementById(start) ? start : panels[0].id);
+
+  var toggle = document.getElementById("theme-toggle");
+  function current() {{ return document.documentElement.getAttribute("data-theme"); }}
+  function icon() {{ toggle.textContent = current() === "dark" ? "☀️" : "🌙"; }}
+  toggle.addEventListener("click", function () {{
+    var next = current() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try {{ localStorage.setItem("theme", next); }} catch (e) {{}}
+    icon();
+  }});
+  icon();
 </script>
 </body>
 </html>"""
