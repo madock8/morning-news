@@ -4,10 +4,13 @@ from zoneinfo import ZoneInfo
 # ---- SETTINGS: edit categories and feeds here ----
 CATEGORIES = {
     "Technology": [
-        "https://www.theverge.com/rss/index.xml",
-        "https://feeds.arstechnica.com/arstechnica/index",
-        "https://techcrunch.com/feed/",
-        "https://hnrss.org/frontpage",
+        "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
+        "https://www.purepc.pl/rss_all.xml",
+        "https://www.telepolis.pl/rss", 
+        #"https://www.theverge.com/rss/index.xml",
+        #"https://feeds.arstechnica.com/arstechnica/index",
+        #"https://techcrunch.com/feed/",
+        #"https://hnrss.org/frontpage",
     ],
     "IT": [
         "https://www.bleepingcomputer.com/feed/",
@@ -16,8 +19,10 @@ CATEGORIES = {
         "https://www.reddit.com/r/sysadmin/.rss",
     ],
     "World": [
+        "https://www.polsatnews.pl/rss/technologie.xml",
+        "https://www.polsatnews.pl/rss/swiat.xml",
         "https://feeds.bbci.co.uk/news/world/rss.xml",
-        "https://feeds.bbci.co.uk/news/rss.xml",
+        "https://feeds.bbci.co.uk/news/rss.xml",          
     ],
 }
 
