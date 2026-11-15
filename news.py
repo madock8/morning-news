@@ -3,10 +3,11 @@ from zoneinfo import ZoneInfo
 
 # ---- SETTINGS: edit categories and feeds here ----
 CATEGORIES = {
-    "Technology": [
+    "Technologie": [
         "http://www.benchmark.pl/rss/aktualnosci-pliki.xml",
         "https://www.purepc.pl/rss_all.xml",
-        "https://www.telepolis.pl/rss", 
+        "https://www.telepolis.pl/rss",
+        "https://www.polsatnews.pl/rss/technologie.xml",
         #"https://www.theverge.com/rss/index.xml",
         #"https://feeds.arstechnica.com/arstechnica/index",
         #"https://techcrunch.com/feed/",
@@ -18,8 +19,7 @@ CATEGORIES = {
         "https://www.theregister.com/headlines.atom",
         "https://www.reddit.com/r/sysadmin/.rss",
     ],
-    "World": [
-        "https://www.polsatnews.pl/rss/technologie.xml",
+    "Świat": [        
         "https://www.polsatnews.pl/rss/swiat.xml",
         "https://feeds.bbci.co.uk/news/world/rss.xml",
         "https://feeds.bbci.co.uk/news/rss.xml",          
