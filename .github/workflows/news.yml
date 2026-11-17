@@ -2,7 +2,7 @@ name: Build news page
 
 on:
   schedule:
-    - cron: "30 5 * * *"   # 05:30 UTC = 06:30 in Poland (winter time)
+    - cron: "30 4 * * *"   # 04:30 UTC = 05:30 in Poland (winter time)
   workflow_dispatch:        # lets you run it manually with a button
 
 permissions:
