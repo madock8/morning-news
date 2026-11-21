@@ -33,7 +33,9 @@ CATEGORIES = {
     ],
     "Finanse": [
         "http://www.money.pl/rss/main.xml",
-        "https://www.bankier.pl/rss",        
+        "https://www.bankier.pl/rss/finanse.xml",
+        "https://www.bankier.pl/rss/gielda.xml",
+        "https://www.bankier.pl/rss/waluty.xml",
     ],
 }
 
